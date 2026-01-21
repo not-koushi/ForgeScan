@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[allow(dead_code)]
 pub fn shannon_entropy(data: &str) -> f64 {
     let mut freq = HashMap::new();
     let len = data.len() as f64;
