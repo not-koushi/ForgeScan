@@ -1,0 +1,9 @@
+{
+  "name": "vulnerable-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "expres": "^4.18.2",
+    "lodash": "^4.17.21"
+  }
+}
