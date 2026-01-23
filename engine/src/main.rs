@@ -11,47 +11,52 @@ mod obfuscation;
 mod scan_target;
 mod cli;
 
-use crate::loader::load_package_json;
-use crate::scanner::scan_dependencies;
-use crate::report::print_warning;
 use clap::Parser;
 use cli::Cli;
-use scan_target::scan_path;
-use finding::Severity;
+use serde_json::json;
 use std::path::{Path, PathBuf};
+
+use crate::loader::load_package_json;
+use crate::scanner::scan_dependencies;
+use crate::scan_target::scan_path;
+use crate::finding::{Finding, Severity};
 
 fn main() {
     let cli = Cli::parse();
 
     println!("ForgeScan scanning path: {}\n", cli.path);
 
-    let findings = scan_path(&cli.path);
+    // Central findings collection
+    let mut all_findings: Vec<Finding> = Vec::new();
 
-    for finding in findings {
+    // Path-based obfuscation scan
+    let path_findings = scan_path(&cli.path);
+
+    for finding in path_findings {
         if matches!(finding.severity, Severity::Low) {
             continue;
         }
 
-        println!(
-            "[{:?}] {} (entropy: {:.2})",
-            finding.severity,
-            finding.file,
-            finding.entropy
-        );
+        if !cli.json {
+            println!(
+                "[{:?}] {} (entropy: {:.2})",
+                finding.severity,
+                finding.path.as_deref().unwrap_or("unknown"),
+                finding.entropy.unwrap_or(0.0)
+            );
+        }
+
+        all_findings.push(finding);
     }
 
+    // Dependency typo-squatting scan
     if cli.deps {
-        println!("\n[INFO] Scanning package.json for typo-squatting...\n");
+        if !cli.json {
+            println!("\n[INFO] Scanning package.json for typo-squatting...\n");
+        }
 
         let scan_path = PathBuf::from(&cli.path);
-
-        // Resolve project root correctly
-        let project_root = if scan_path.is_dir() {
-            scan_path.parent().unwrap_or(Path::new("."))
-        } else {
-            scan_path.parent().unwrap_or(Path::new("."))
-        };
-
+        let project_root = scan_path.parent().unwrap_or(Path::new("."));
         let pkg_path = project_root.join("package.json");
 
         match load_package_json(pkg_path.to_str().unwrap()) {
@@ -60,10 +65,18 @@ fn main() {
                     let dep_names: Vec<String> =
                         dependencies.keys().cloned().collect();
 
-                    let findings = scan_dependencies(&dep_names);
+                    let dep_findings = scan_dependencies(&dep_names);
 
-                    for finding in findings {
-                        print_warning(&finding);
+                    for finding in dep_findings {
+                        if !cli.json {
+                            println!(
+                                "[MEDIUM] Package \"{}\" resembles \"{}\"",
+                                finding.package.as_deref().unwrap_or("unknown"),
+                                finding.similar_to.as_deref().unwrap_or("unknown")
+                            );
+                        }
+
+                        all_findings.push(finding);
                     }
                 }
             }
@@ -75,5 +88,20 @@ fn main() {
                 );
             }
         }
+    }
+
+    // JSON output (CI/Machine Consumption)
+    if cli.json {
+        let output = json!({
+            "tool": "forgescan",
+            "version": "1.0.0",
+            "findings": all_findings
+        });
+
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&output)
+                .expect("Failed to serialize ForgeScan output")
+        );
     }
 }
