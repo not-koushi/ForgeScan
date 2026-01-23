@@ -11,6 +11,9 @@ mod obfuscation;
 mod scan_target;
 mod cli;
 
+use crate::loader::load_package_json;
+use crate::scanner::scan_dependencies;
+use crate::report::print_warning;
 use clap::Parser;
 use cli::Cli;
 use scan_target::scan_path;
@@ -36,21 +39,17 @@ fn main() {
         );
     }
 
-    if cli.include_deps {
-        println!("\n[INFO] Dependency scanning enabled (node_modules)");
-        let dep_findings = scan_path("node_modules");
+    if cli.deps {
+    println!("\n[INFO] Scanning package.json for typo-squatting...\n");
 
-        for finding in dep_findings {
-            if matches!(finding.severity, Severity::Low) {
-                continue;
-            }
+    let pkg = load_package_json("package.json");
 
-            println!(
-                "[{:?}] {} (entropy: {:.2})",
-                finding.severity,
-                finding.file,
-                finding.entropy
-            );
+    if let Some(dependencies) = pkg.dependencies {
+        let dep_names: Vec<String> = dependencies.keys().cloned().collect();
+        let findings = scan_dependencies(&dep_names);
+
+        for finding in findings {
+            print_warning(&finding);
         }
     }
 }
