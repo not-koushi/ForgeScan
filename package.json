@@ -1,0 +1,26 @@
+{
+  "name": "forgescan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/not-koushi/ForgeScan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/not-koushi/ForgeScan/issues"
+  },
+  "homepage": "https://github.com/not-koushi/ForgeScan#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "lodash": "^4.17.23",
+    "react": "^19.2.3"
+  }
+}
