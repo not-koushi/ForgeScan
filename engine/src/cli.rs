@@ -1,5 +1,7 @@
+use clap::Parser;
+
 #[derive(Parser, Debug)]
-#[command(name = "forgescan")]
+#[command(name = "forgescan", about = "Supply-chain security scanner")]
 pub struct Cli {
     /// Path to scan (e.g. src/, dist/)
     pub path: String,
