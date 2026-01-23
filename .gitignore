@@ -3,6 +3,7 @@
 
 # Node
 /node_modules/
+reporter/node_modules
 
 # OS
 .DB_Store
