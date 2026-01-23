@@ -11,7 +11,7 @@ pub fn analyze_file(path: &str) -> Option<Finding> {
     } else if entropy > 4.8 {
         Severity::Medium
     } else {
-        return None;
+        Severity::Low;
     };
 
     Some(Finding {

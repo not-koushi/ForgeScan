@@ -32,6 +32,15 @@ fn main() {
     let malware_findings = scan_node_modules("../node_modules");
 
     for finding in malware_findings {
-        println!("{:?}", finding);
+        if matches!(finding.severity, Severity::Low){
+            continue;
+        }
+        
+        println!(
+            "[{:?}] {} (entropy: {:.2})",
+            finding.severity,
+            finding.file,
+            finding.entropy
+        );
     }
 }
