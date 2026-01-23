@@ -12,7 +12,7 @@ mod cli;
 
 use cli::Cli;
 use serde_json::json;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use clap::Parser;
 use crate::loader::load_package_json;
