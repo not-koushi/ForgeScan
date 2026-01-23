@@ -1,5 +1,8 @@
 use clap::Parser;
 
+#[arg(bool)]
+pub json:bool,
+
 #[derive(Parser, Debug)]
 #[command(name = "forgescan", about = "Supply-chain security scanner")]
 pub struct Cli {
