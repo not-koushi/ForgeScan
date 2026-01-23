@@ -8,40 +8,49 @@ mod scanner;
 mod finding;
 mod fs_scan;
 mod obfuscation;
-mod node_modules_scan;
+mod scan_target;
+mod cli;
 
-use loader::load_package_json;
-use scanner::scan_dependencies;
-use report::print_warning;
-use node_modules_scan::scan_node_modules;
-use crate::finding::Severity;
+use clap::Parser;
+use cli::Cli;
+use scan_target::scan_path;
+use finding::Severity;
 
 fn main() {
-    let pkg = load_package_json("../samples/package.json");
+    let cli = Cli::parse();
 
-    if let Some(dependencies) = pkg.dependencies {
-        let dep_names: Vec<String> = dependencies.keys().cloned().collect();
-        let findings = scan_dependencies(&dep_names);
+    println!("ForgeScan scanning path: {}\n", cli.path);
 
-        for finding in findings {
-            print_warning(&finding);
-        }
-    }
+    let findings = scan_path(&cli.path);
 
-    println!("\nScanning node_modules for obfuscated malware...\n");
-
-    let malware_findings = scan_node_modules("../node_modules");
-
-    for finding in malware_findings {
-        if matches!(finding.severity, Severity::Low){
+    for finding in findings {
+        if matches!(finding.severity, Severity::Low) {
             continue;
         }
-        
+
         println!(
             "[{:?}] {} (entropy: {:.2})",
             finding.severity,
             finding.file,
             finding.entropy
         );
+    }
+
+    if cli.include_deps {
+        println!("\n[INFO] Dependency scanning enabled (node_modules)");
+        let dep_findings = scan_path("node_modules");
+
+        for finding in dep_findings {
+            if matches!(finding.severity, Severity::Low) {
+                continue;
+            }
+
+            println!(
+                "[{:?}] {} (entropy: {:.2})",
+                finding.severity,
+                finding.file,
+                finding.entropy
+            );
+        }
     }
 }
