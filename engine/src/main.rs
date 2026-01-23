@@ -18,7 +18,7 @@ use clap::Parser;
 use cli::Cli;
 use scan_target::scan_path;
 use finding::Severity;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 fn main() {
     let cli = Cli::parse();
@@ -43,10 +43,14 @@ fn main() {
     if cli.deps {
         println!("\n[INFO] Scanning package.json for typo-squatting...\n");
 
-        let scan_path = Path::new(&cli.path);
-        let project_root = scan_path
-            .parent()
-            .unwrap_or(Path::new("."));
+        let scan_path = PathBuf::from(&cli.path);
+
+        // Resolve project root correctly
+        let project_root = if scan_path.is_dir() {
+            scan_path.parent().unwrap_or(Path::new("."))
+        } else {
+            scan_path.parent().unwrap_or(Path::new("."))
+        };
 
         let pkg_path = project_root.join("package.json");
 
@@ -61,13 +65,13 @@ fn main() {
                     for finding in findings {
                         print_warning(&finding);
                     }
-                } 
+                }
             }
             Err(e) => {
                 eprintln!(
                     "[ERROR] Failed to load package.json at {}: {}",
                     pkg_path.display(),
-                    e 
+                    e
                 );
             }
         }
