@@ -8,8 +8,9 @@ reporter/node_modules
 # OS
 .DB_Store
 
-# txt
+# Test files
 *.txt
+suspicious.js
 
 # ForgeScan generated reports
 report.json
