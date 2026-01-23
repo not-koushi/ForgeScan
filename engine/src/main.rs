@@ -15,6 +15,7 @@ use cli::Cli;
 use serde_json::json;
 use std::path::{Path, PathBuf};
 
+use clap::Parser;
 use crate::loader::load_package_json;
 use crate::scanner::scan_dependencies;
 use crate::scan_target::scan_path;
