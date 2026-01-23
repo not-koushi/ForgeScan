@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "expres": "^4.18.2",
-    "lodash": "^4.17.21"
+    "lodas": "^4.17.21",
+    "axios": "^1.6.0"
   }
 }
