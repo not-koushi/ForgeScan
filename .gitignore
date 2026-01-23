@@ -10,7 +10,6 @@ reporter/node_modules
 
 # Test files
 *.txt
-suspicious.js
 
 # ForgeScan generated reports
 report.json
