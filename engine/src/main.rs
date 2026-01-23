@@ -60,7 +60,6 @@ fn main() {
 
         let project_root = scan_path
             .parent()
-            .and_then(|p| p.parent())
             .unwrap_or(Path::new("."));
         
         let pkg_path = project_root.join("package.json");
