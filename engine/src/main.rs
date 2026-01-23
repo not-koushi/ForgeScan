@@ -1,7 +1,6 @@
 mod entropy;
 mod levenshtein;
 mod package_scan;
-mod report;
 mod package_json;
 mod loader;
 mod scanner;
@@ -58,7 +57,7 @@ fn main() {
         }
 
         let scan_path = PathBuf::from(&cli.path);
-        let project_root = scan_path.parent().unwrap_or(Path::new("."));
+        let project_root = Path::new("..");
         let pkg_path = project_root.join("package.json");
 
         match load_package_json(pkg_path.to_str().unwrap()) {
