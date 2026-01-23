@@ -24,7 +24,9 @@ use crate::finding::{Finding, Severity};
 fn main() {
     let cli = Cli::parse();
 
-    println!("ForgeScan scanning path: {}\n", cli.path);
+    if !cli.json {
+        println!("ForgeScan scanning path: {}\n", cli.path);
+    }
 
     // Central findings collection
     let mut all_findings: Vec<Finding> = Vec::new();
