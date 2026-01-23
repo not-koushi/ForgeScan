@@ -14,6 +14,7 @@ use loader::load_package_json;
 use scanner::scan_dependencies;
 use report::print_warning;
 use node_modules_scan::scan_node_modules;
+use crate::finding::Severity;
 
 fn main() {
     let pkg = load_package_json("../samples/package.json");
