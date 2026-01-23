@@ -11,7 +11,6 @@ mod obfuscation;
 mod scan_target;
 mod cli;
 
-use clap::Parser;
 use cli::Cli;
 use serde_json::json;
 use std::path::{Path, PathBuf};

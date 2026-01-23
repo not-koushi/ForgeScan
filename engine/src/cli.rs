@@ -1,8 +1,5 @@
 use clap::Parser;
 
-#[arg(bool)]
-pub json:bool,
-
 #[derive(Parser, Debug)]
 #[command(name = "forgescan", about = "Supply-chain security scanner")]
 pub struct Cli {
@@ -16,4 +13,8 @@ pub struct Cli {
     /// Scan package.json for typo-squatting
     #[arg(long)]
     pub deps: bool,
+
+    /// Emit JSON output
+    #[arg(long)]
+    pub json: bool,
 }
