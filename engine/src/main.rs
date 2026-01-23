@@ -56,7 +56,14 @@ fn main() {
             println!("\n[INFO] Scanning package.json for typo-squatting...\n");
         }
 
-        let project_root = Path::new("..");
+        let scan_path = Path::new(&cli.path);
+
+        let project_root = scan_path
+            .parent()
+            .unwrap_or(Path::new("."))
+            .parent()
+            unwrap_or(Path::new("."));
+        
         let pkg_path = project_root.join("package.json");
 
         match load_package_json(pkg_path.to_str().unwrap()) {
