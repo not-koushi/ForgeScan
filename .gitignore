@@ -10,3 +10,8 @@ reporter/node_modules
 
 # txt
 *.txt
+
+# ForgeScan generated reports
+report.json
+*.report.json
+*.scan.json
