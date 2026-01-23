@@ -22,7 +22,10 @@ if (!input) {
   process.exit(1);
 }
 
-const raw = fs.readFileSync(input, "utf-8");
+let raw = fs.readFileSync(input, "utf-8");
+if (raw.charCodeAt(0) === 0xFEFF) {
+  raw = raw.slice(1);
+}
 const report: Report = JSON.parse(raw);
 
 console.log(`\nForgeScan Report (${report.version})\n`);
