@@ -15,8 +15,11 @@ pub fn analyze_file(path: &str) -> Option<Finding> {
     };
 
     Some(Finding {
-        file: path.to_string(),
-        entropy,
+        category: "obfuscation".into(),
         severity,
+        path: Some(path.to_string()),
+        entropy: Some(entropy),
+        package: None,
+        similar_to: None,
     })
 }
